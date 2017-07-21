@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "postinstall": "elm make src/App.elm",
+    "postinstall": "elm make src/App.elm --yes",
     "start": "node proxy.js"
   },
   "author": "",
