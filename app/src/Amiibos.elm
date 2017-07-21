@@ -26,7 +26,7 @@ getAmiiboList : (Result Http.Error AmiiboList -> msg) -> Cmd msg
 getAmiiboList msg =
     let
         url =
-            "https://amiibos-api.herokuapp.com/amiibos"
+            "/api/amiibos"
 
         request =
             Http.get url decodeAmiiboList
