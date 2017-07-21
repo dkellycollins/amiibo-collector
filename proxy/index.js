@@ -10,4 +10,3 @@ app.use('/api', proxy(API_URL));
 
 app.listen(PORT);
 console.log('Proxy started on port [' + PORT + ']');
-
