@@ -4,12 +4,14 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "postinstall": "cd proxy && npm install",
-    "start": "node proxy/index.js"
+    "postinstall": "elm make src/App.elm",
+    "start": "node proxy.js"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
-    
+    "elm": "^0.18.0",
+    "express": "^4.15.3",
+    "express-http-proxy": "^1.0.5"
   }
 }

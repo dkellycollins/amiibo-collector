@@ -4,7 +4,7 @@ var path = require('path');
 
 var API_URL = process.env.API_URL;
 var PORT = process.env.PORT || 3000;
-var APP_PATH = path.join(__dirname, '../app')
+var APP_PATH = './';
 
 var app = express();
 app.use('/', express.static(APP_PATH))
