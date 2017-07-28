@@ -2,6 +2,7 @@ module Amiibos exposing (..)
 
 import Http
 import Json.Decode exposing (..)
+import Json.Decode.Pipeline exposing (decode, optional, required)
 
 
 type alias AmiiboSeries =
@@ -18,32 +19,38 @@ type alias Amiibo =
     }
 
 
-type alias AmiiboList =
+type alias Amiibos =
     List Amiibo
 
 
-getAmiiboList : (Result Http.Error AmiiboList -> msg) -> Cmd msg
-getAmiiboList msg =
+getAmiibos : (Result Http.Error Amiibos -> msg) -> Cmd msg
+getAmiibos msg =
     let
         url =
             "/api/amiibos"
 
         request =
-            Http.get url decodeAmiiboList
+            Http.get url amiibosDecoder
     in
     Http.send msg request
 
 
-decodeAmiiboList : Decoder AmiiboList
-decodeAmiiboList =
-    list decodeAmiibo
+amiibosDecoder : Decoder Amiibos
+amiibosDecoder =
+    list amiiboDecoder
 
 
-decodeAmiibo : Decoder Amiibo
-decodeAmiibo =
-    map4 Amiibo (field "name" string) (field "displayName" string) (field "releaseDate" (nullable string)) (field "series" (nullable decodeAmiiboSeries))
+amiiboDecoder : Decoder Amiibo
+amiiboDecoder =
+    decode Amiibo
+        |> required "name" string
+        |> required "displayName" string
+        |> required "releaseDate" (nullable string)
+        |> required "series" (nullable amiiboSeriesDecoder)
 
 
-decodeAmiiboSeries : Decoder AmiiboSeries
-decodeAmiiboSeries =
-    map2 AmiiboSeries (field "name" string) (field "displayName" string)
+amiiboSeriesDecoder : Decoder AmiiboSeries
+amiiboSeriesDecoder =
+    decode AmiiboSeries
+        |> required "name" string
+        |> required "displayName" string

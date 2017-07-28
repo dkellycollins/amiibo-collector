@@ -8,7 +8,7 @@ import Material.Table
 import Maybe
 
 
-main : Program Never AmiiboList Msg
+main : Program Never Amiibos Msg
 main =
     Html.program
         { init = init
@@ -23,23 +23,23 @@ main =
 
 
 type Msg
-    = UpdatedAmiibos (Result Http.Error AmiiboList)
+    = UpdatedAmiibos (Result Http.Error Amiibos)
 
 
 
 -- INIT
 
 
-init : ( AmiiboList, Cmd Msg )
+init : ( Amiibos, Cmd Msg )
 init =
-    ( [], getAmiiboList UpdatedAmiibos )
+    ( [], getAmiibos UpdatedAmiibos )
 
 
 
 -- UPDATE
 
 
-update : Msg -> AmiiboList -> ( AmiiboList, Cmd Msg )
+update : Msg -> Amiibos -> ( Amiibos, Cmd Msg )
 update msg model =
     case msg of
         UpdatedAmiibos (Result.Ok newList) ->
@@ -53,7 +53,7 @@ update msg model =
 -- VIEW
 
 
-view : List Amiibo -> Html.Html msg
+view : Amiibos -> Html.Html msg
 view amiibos =
     Material.Table.table []
         [ Material.Table.thead []
@@ -98,6 +98,6 @@ mapAmiiboToListItem amiibo =
 --SUBSCRIPTIONS
 
 
-subscriptions : AmiiboList -> Sub Msg
+subscriptions : Amiibos -> Sub Msg
 subscriptions model =
     Sub.none
