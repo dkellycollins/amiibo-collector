@@ -1,4 +1,4 @@
-module Amiibos exposing (..)
+module Models.Amiibos exposing (Amiibo, AmiiboSeries, Amiibos, getAmiibos)
 
 import Http
 import Json.Decode exposing (..)

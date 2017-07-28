@@ -1,11 +1,11 @@
 module Main exposing (..)
 
-import Amiibos exposing (..)
 import Html
 import Http
-import Material
-import Material.Table
-import Maybe
+import Material.Grid
+import Material.Progress
+import Models.Amiibos exposing (..)
+import Views.AmiibosTable exposing (..)
 
 
 main : Program Never Amiibos Msg
@@ -43,7 +43,7 @@ update : Msg -> Amiibos -> ( Amiibos, Cmd Msg )
 update msg model =
     case msg of
         UpdatedAmiibos (Result.Ok newList) ->
-            ( newList, Cmd.none )
+            ( List.sortBy .name newList, Cmd.none )
 
         UpdatedAmiibos (Result.Err _) ->
             ( [], Cmd.none )
@@ -55,43 +55,8 @@ update msg model =
 
 view : Amiibos -> Html.Html msg
 view amiibos =
-    Material.Table.table []
-        [ Material.Table.thead []
-            [ Material.Table.th [] [ Html.text "Name" ]
-            , Material.Table.th [] [ Html.text "Series" ]
-            , Material.Table.th [] [ Html.text "Release Date" ]
-            ]
-        , Material.Table.tbody [] (List.map mapAmiiboToTableRow amiibos)
-        ]
-
-
-mapAmiiboToTableRow : Amiibo -> Html.Html msg
-mapAmiiboToTableRow amiibo =
-    Html.tr []
-        [ Material.Table.td [] [ Html.text amiibo.displayName ]
-        , Material.Table.td [] [ Html.text (getAmiiboSeriesView amiibo.series) ]
-        , Material.Table.td [] [ Html.text (getReleaseDateView amiibo.releaseDate) ]
-        ]
-
-
-getReleaseDateView : Maybe String -> String
-getReleaseDateView releaseDate =
-    Maybe.withDefault "N/A" releaseDate
-
-
-getAmiiboSeriesView : Maybe AmiiboSeries -> String
-getAmiiboSeriesView amiiboSeries =
-    case amiiboSeries of
-        Nothing ->
-            "N/A"
-
-        Just amiiboSeries ->
-            amiiboSeries.displayName
-
-
-mapAmiiboToListItem : Amiibo -> Html.Html msg
-mapAmiiboToListItem amiibo =
-    Html.li [] [ Html.text (toString amiibo) ]
+    Material.Grid.grid []
+        [ Material.Grid.cell [ Material.Grid.size Material.Grid.All 12 ] [ viewAmiibosTable amiibos ] ]
 
 
 
