@@ -4,11 +4,12 @@ import Html
 import Http
 import Material.Grid
 import Material.Progress
+import Messages exposing (..)
 import Models.Amiibos exposing (..)
 import Views.AmiibosTable exposing (..)
 
 
-main : Program Never Amiibos Msg
+main : Program Never AppState Msg
 main =
     Html.program
         { init = init
@@ -19,50 +20,71 @@ main =
 
 
 
--- MESSAGES
+-- MODELS
 
 
-type Msg
-    = UpdatedAmiibos (Result Http.Error Amiibos)
+type alias AppState =
+    { amiibos : Amiibos
+    , sortInfo : SortInfo
+    }
 
 
 
 -- INIT
 
 
-init : ( Amiibos, Cmd Msg )
+init : ( AppState, Cmd Msg )
 init =
-    ( [], getAmiibos UpdatedAmiibos )
+    let
+        appState =
+            { amiibos = []
+            , sortInfo = SortInfo Name Asc
+            }
+    in
+    ( appState, getAmiibos UpdatedAmiibos )
 
 
 
 -- UPDATE
 
 
-update : Msg -> Amiibos -> ( Amiibos, Cmd Msg )
-update msg model =
+update : Msg -> AppState -> ( AppState, Cmd Msg )
+update msg appState =
     case msg of
         UpdatedAmiibos (Result.Ok newList) ->
-            ( List.sortBy .name newList, Cmd.none )
+            ( { appState | amiibos = newList }, Cmd.none )
 
         UpdatedAmiibos (Result.Err _) ->
-            ( [], Cmd.none )
+            ( { appState | amiibos = [] }, Cmd.none )
+
+        SortChanged info ->
+            ( { appState | sortInfo = info }, Cmd.none )
 
 
 
 -- VIEW
 
 
-view : Amiibos -> Html.Html msg
-view amiibos =
+view : AppState -> Html.Html Msg
+view appState =
     Material.Grid.grid []
-        [ Material.Grid.cell [ Material.Grid.size Material.Grid.All 12 ] [ viewAmiibosTable amiibos ] ]
+        [ Material.Grid.cell [ Material.Grid.size Material.Grid.All 12 ]
+            [ viewAmiibosTable appState.amiibos appState.sortInfo
+            ]
+        ]
+
+
+viewLoadingBar : Amiibos -> Html.Html msg
+viewLoadingBar amiibos =
+    case amiibos of
+        _ ->
+            Material.Progress.indeterminate
 
 
 
 --SUBSCRIPTIONS
 
 
-subscriptions : Amiibos -> Sub Msg
+subscriptions : AppState -> Sub Msg
 subscriptions model =
     Sub.none

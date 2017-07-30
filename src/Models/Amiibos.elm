@@ -1,8 +1,9 @@
-module Models.Amiibos exposing (Amiibo, AmiiboSeries, Amiibos, getAmiibos)
+module Models.Amiibos exposing (Amiibo, AmiiboSeries, Amiibos, SortDirection(..), SortInfo, SortableField(..), getAmiibos, sortAmiibos)
 
 import Http
 import Json.Decode exposing (..)
 import Json.Decode.Pipeline exposing (decode, optional, required)
+import List exposing (reverse, sortBy)
 
 
 type alias AmiiboSeries =
@@ -23,6 +24,21 @@ type alias Amiibos =
     List Amiibo
 
 
+type SortableField
+    = Name
+
+
+type SortDirection
+    = Asc
+    | Desc
+
+
+type alias SortInfo =
+    { field : SortableField
+    , dir : SortDirection
+    }
+
+
 getAmiibos : (Result Http.Error Amiibos -> msg) -> Cmd msg
 getAmiibos msg =
     let
@@ -33,6 +49,16 @@ getAmiibos msg =
             Http.get url amiibosDecoder
     in
     Http.send msg request
+
+
+sortAmiibos : Amiibos -> SortableField -> SortDirection -> Amiibos
+sortAmiibos amiibos sortedField sortDir =
+    case ( sortedField, sortDir ) of
+        ( Name, Asc ) ->
+            sortBy .name amiibos
+
+        ( Name, Desc ) ->
+            reverse (sortBy .name amiibos)
 
 
 amiibosDecoder : Decoder Amiibos
