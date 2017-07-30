@@ -19,7 +19,7 @@ viewAmiibosTable amiibos sortInfo =
             [ th [] []
             , viewNameColumnHeader sortInfo.field sortInfo.dir
             , th [] [ text "Series" ]
-            , th [] [ text "Release Date" ]
+            , viewReleaseDateColumnHeader sortInfo.field sortInfo.dir
             ]
         , tbody [] (List.map viewAmiiboTableRow sortedAmiibos)
         ]
@@ -27,20 +27,52 @@ viewAmiibosTable amiibos sortInfo =
 
 viewNameColumnHeader : SortableField -> SortDirection -> Html.Html Msg
 viewNameColumnHeader sortField sortDir =
+    let
+        headerText =
+            text "Name"
+    in
     case ( sortField, sortDir ) of
         ( Name, Asc ) ->
             th
                 [ ascending
                 , onClick (SortChanged (SortInfo Name Desc))
                 ]
-                [ text "Name" ]
+                [ headerText ]
 
         ( Name, Desc ) ->
             th
                 [ descending
                 , onClick (SortChanged (SortInfo Name Asc))
                 ]
-                [ text "Name" ]
+                [ headerText ]
+
+        _ ->
+            th [ onClick (SortChanged (SortInfo Name Asc)) ] [ headerText ]
+
+
+viewReleaseDateColumnHeader : SortableField -> SortDirection -> Html.Html Msg
+viewReleaseDateColumnHeader sortField sortDir =
+    let
+        headerText =
+            text "Release Date"
+    in
+    case ( sortField, sortDir ) of
+        ( ReleaseDate, Asc ) ->
+            th
+                [ ascending
+                , onClick (SortChanged (SortInfo ReleaseDate Desc))
+                ]
+                [ headerText ]
+
+        ( ReleaseDate, Desc ) ->
+            th
+                [ descending
+                , onClick (SortChanged (SortInfo ReleaseDate Asc))
+                ]
+                [ headerText ]
+
+        _ ->
+            th [ onClick (SortChanged (SortInfo ReleaseDate Asc)) ] [ headerText ]
 
 
 viewAmiiboTableRow : Amiibo -> Html.Html msg

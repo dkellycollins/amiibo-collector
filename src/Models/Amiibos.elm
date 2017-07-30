@@ -3,7 +3,7 @@ module Models.Amiibos exposing (Amiibo, AmiiboSeries, Amiibos, SortDirection(..)
 import Http
 import Json.Decode exposing (..)
 import Json.Decode.Pipeline exposing (decode, optional, required)
-import List exposing (reverse, sortBy)
+import List exposing (reverse, sortBy, sortWith)
 
 
 type alias AmiiboSeries =
@@ -26,6 +26,7 @@ type alias Amiibos =
 
 type SortableField
     = Name
+    | ReleaseDate
 
 
 type SortDirection
@@ -59,6 +60,28 @@ sortAmiibos amiibos sortedField sortDir =
 
         ( Name, Desc ) ->
             reverse (sortBy .name amiibos)
+
+        ( ReleaseDate, Asc ) ->
+            sortWith releaseDateComparison amiibos
+
+        ( ReleaseDate, Desc ) ->
+            reverse (sortWith releaseDateComparison amiibos)
+
+
+releaseDateComparison : Amiibo -> Amiibo -> Order
+releaseDateComparison amiiboA amiiboB =
+    case ( amiiboA.releaseDate, amiiboB.releaseDate ) of
+        ( Just valueA, Just valueB ) ->
+            compare valueA valueB
+
+        ( Just valueA, Nothing ) ->
+            GT
+
+        ( Nothing, Just valueB ) ->
+            LT
+
+        ( Nothing, Nothing ) ->
+            EQ
 
 
 amiibosDecoder : Decoder Amiibos
