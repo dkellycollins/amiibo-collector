@@ -107,26 +107,26 @@ viewAmiiboTableRow amiibo =
     Html.tr []
         [ td [] [ i "check_box_outline_blank" ]
         , td [] [ text amiibo.displayName ]
-        , td [] [ text (viewAmiiboSeries amiibo.series) ]
-        , td [] [ text (viewReleaseDate amiibo.releaseDate) ]
+        , td [] [ viewAmiiboSeries amiibo.series ]
+        , td [] [ viewReleaseDate amiibo.releaseDate ]
         ]
 
 
-viewReleaseDate : Maybe Date -> String
+viewReleaseDate : Maybe Date -> Html.Html msg
 viewReleaseDate releaseDate =
     case releaseDate of
         Just releaseDate ->
-            toFormattedString "MMMM ddd, y" releaseDate
+            text (toFormattedString "MMMM ddd, y" releaseDate)
 
         Nothing ->
-            "N/A"
+            text "N/A"
 
 
-viewAmiiboSeries : Maybe AmiiboSeries -> String
+viewAmiiboSeries : Maybe AmiiboSeries -> Html.Html msg
 viewAmiiboSeries amiiboSeries =
     case amiiboSeries of
         Just amiiboSeries ->
-            amiiboSeries.displayName
+            text amiiboSeries.displayName
 
         Nothing ->
-            "N/A"
+            text "N/A"
