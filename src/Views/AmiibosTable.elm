@@ -1,5 +1,7 @@
 module Views.AmiibosTable exposing (viewAmiibosTable)
 
+import Date exposing (Date)
+import Date.Extra exposing (toFormattedString)
 import Html exposing (text)
 import Material.Icon exposing (i)
 import Material.Options exposing (css, onClick)
@@ -110,16 +112,21 @@ viewAmiiboTableRow amiibo =
         ]
 
 
-viewReleaseDate : Maybe String -> String
+viewReleaseDate : Maybe Date -> String
 viewReleaseDate releaseDate =
-    Maybe.withDefault "N/A" releaseDate
+    case releaseDate of
+        Just releaseDate ->
+            toFormattedString "MMMM ddd, y" releaseDate
+
+        Nothing ->
+            "N/A"
 
 
 viewAmiiboSeries : Maybe AmiiboSeries -> String
 viewAmiiboSeries amiiboSeries =
     case amiiboSeries of
-        Nothing ->
-            "N/A"
-
         Just amiiboSeries ->
             amiiboSeries.displayName
+
+        Nothing ->
+            "N/A"

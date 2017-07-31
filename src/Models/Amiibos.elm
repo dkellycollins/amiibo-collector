@@ -1,5 +1,7 @@
 module Models.Amiibos exposing (Amiibo, AmiiboSeries, Amiibos, SortDirection(..), SortInfo, SortableField(..), getAmiibos, sortAmiibos)
 
+import Date exposing (Date)
+import Date.Extra
 import Http
 import Json.Decode exposing (..)
 import Json.Decode.Pipeline exposing (decode, optional, required)
@@ -16,7 +18,7 @@ type alias AmiiboSeries =
 type alias Amiibo =
     { name : String
     , displayName : String
-    , releaseDate : Maybe String
+    , releaseDate : Maybe Date
     , series : Maybe AmiiboSeries
     }
 
@@ -112,7 +114,7 @@ releaseDateComparison : Amiibo -> Amiibo -> Order
 releaseDateComparison amiiboA amiiboB =
     case ( amiiboA.releaseDate, amiiboB.releaseDate ) of
         ( Just valueA, Just valueB ) ->
-            compare valueA valueB
+            Date.Extra.compare valueA valueB
 
         ( Just valueA, Nothing ) ->
             GT
@@ -150,7 +152,7 @@ amiiboDecoder =
     decode Amiibo
         |> required "name" string
         |> required "displayName" string
-        |> required "releaseDate" (nullable string)
+        |> required "releaseDate" (nullable dateDecoder)
         |> required "series" (nullable amiiboSeriesDecoder)
 
 
@@ -159,3 +161,17 @@ amiiboSeriesDecoder =
     decode AmiiboSeries
         |> required "name" string
         |> required "displayName" string
+
+
+dateDecoder : Decoder Date
+dateDecoder =
+    let
+        convert raw =
+            case Date.fromString raw of
+                Ok date ->
+                    succeed date
+
+                Err error ->
+                    fail error
+    in
+    string |> andThen convert
