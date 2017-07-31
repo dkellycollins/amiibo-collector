@@ -4,6 +4,7 @@ import Http
 import Json.Decode exposing (..)
 import Json.Decode.Pipeline exposing (decode, optional, required)
 import List exposing (reverse, sortBy, sortWith)
+import List.Extra exposing (stableSortWith)
 
 
 type alias AmiiboSeries =
@@ -27,6 +28,7 @@ type alias Amiibos =
 type SortableField
     = Name
     | ReleaseDate
+    | Series
 
 
 type SortDirection
@@ -54,18 +56,56 @@ getAmiibos msg =
 
 sortAmiibos : Amiibos -> SortableField -> SortDirection -> Amiibos
 sortAmiibos amiibos sortedField sortDir =
+    let
+        sortByName =
+            stableSortWith (\amiiboA amiiboB -> compare amiiboA.name amiiboB.name)
+
+        sortByReleaseDate =
+            stableSortWith releaseDateComparison
+
+        sortBySeries =
+            stableSortWith seriesComparision
+    in
+    -- In general, amiibos should be sorted by release date, series, then name.
     case ( sortedField, sortDir ) of
         ( Name, Asc ) ->
-            sortBy .name amiibos
+            amiibos
+                |> sortByReleaseDate
+                |> sortBySeries
+                |> sortByName
 
         ( Name, Desc ) ->
-            reverse (sortBy .name amiibos)
+            amiibos
+                |> sortByReleaseDate
+                |> sortBySeries
+                |> sortByName
+                |> reverse
 
         ( ReleaseDate, Asc ) ->
-            sortWith releaseDateComparison amiibos
+            amiibos
+                |> sortBySeries
+                |> sortByName
+                |> sortByReleaseDate
 
         ( ReleaseDate, Desc ) ->
-            reverse (sortWith releaseDateComparison amiibos)
+            amiibos
+                |> sortBySeries
+                |> sortByName
+                |> sortByReleaseDate
+                |> reverse
+
+        ( Series, Asc ) ->
+            amiibos
+                |> sortByReleaseDate
+                |> sortByName
+                |> sortBySeries
+
+        ( Series, Desc ) ->
+            amiibos
+                |> sortByReleaseDate
+                |> sortByName
+                |> sortBySeries
+                |> reverse
 
 
 releaseDateComparison : Amiibo -> Amiibo -> Order
@@ -78,6 +118,22 @@ releaseDateComparison amiiboA amiiboB =
             GT
 
         ( Nothing, Just valueB ) ->
+            LT
+
+        ( Nothing, Nothing ) ->
+            EQ
+
+
+seriesComparision : Amiibo -> Amiibo -> Order
+seriesComparision amiiboA amiiboB =
+    case ( amiiboA.series, amiiboB.series ) of
+        ( Just seriesA, Just seriesB ) ->
+            compare seriesA.name seriesB.name
+
+        ( Just seriesA, Nothing ) ->
+            GT
+
+        ( Nothing, Just seriesB ) ->
             LT
 
         ( Nothing, Nothing ) ->
