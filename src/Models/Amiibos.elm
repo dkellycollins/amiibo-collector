@@ -60,7 +60,7 @@ sortAmiibos : Amiibos -> SortableField -> SortDirection -> Amiibos
 sortAmiibos amiibos sortedField sortDir =
     let
         sortByName =
-            stableSortWith (\amiiboA amiiboB -> compare amiiboA.name amiiboB.name)
+            stableSortWith (\amiiboA amiiboB -> compare amiiboA.displayName amiiboB.displayName)
 
         sortByReleaseDate =
             stableSortWith releaseDateComparison
@@ -130,7 +130,7 @@ seriesComparision : Amiibo -> Amiibo -> Order
 seriesComparision amiiboA amiiboB =
     case ( amiiboA.series, amiiboB.series ) of
         ( Just seriesA, Just seriesB ) ->
-            compare seriesA.name seriesB.name
+            compare seriesA.displayName seriesB.displayName
 
         ( Just seriesA, Nothing ) ->
             GT
