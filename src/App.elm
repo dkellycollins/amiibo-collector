@@ -1,8 +1,10 @@
 module Main exposing (..)
 
 import Html
-import Http
+import Html.Attributes
+import Material
 import Material.Grid
+import Material.Layout
 import Material.Progress
 import Messages exposing (..)
 import Models.Amiibos exposing (..)
@@ -26,6 +28,7 @@ main =
 type alias AppState =
     { amiibos : Amiibos
     , sortInfo : SortInfo
+    , mdl : Material.Model
     }
 
 
@@ -39,6 +42,7 @@ init =
         appState =
             { amiibos = []
             , sortInfo = SortInfo Name Asc
+            , mdl = Material.model
             }
     in
     ( appState, getAmiibos UpdatedAmiibos )
@@ -60,6 +64,9 @@ update msg appState =
         SortChanged info ->
             ( { appState | sortInfo = info }, Cmd.none )
 
+        Mdl msg_ ->
+            Material.update Mdl msg_ appState
+
 
 
 -- VIEW
@@ -67,11 +74,15 @@ update msg appState =
 
 view : AppState -> Html.Html Msg
 view appState =
-    Material.Grid.grid []
-        [ Material.Grid.cell [ Material.Grid.size Material.Grid.All 12 ]
-            [ viewAmiibosTable appState.amiibos appState.sortInfo
-            ]
+    Material.Layout.render Mdl
+        appState.mdl
+        [ Material.Layout.fixedHeader
         ]
+        { header = [ Html.h4 [ Html.Attributes.style [ ( "padding", "8px" ) ] ] [ Html.text "Amiibos" ] ]
+        , drawer = []
+        , tabs = ( [], [] )
+        , main = [ viewAmiibosTable appState.amiibos appState.sortInfo ]
+        }
 
 
 viewLoadingBar : Amiibos -> Html.Html msg
