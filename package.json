@@ -6,7 +6,8 @@
   "scripts": {
     "postinstall": "elm make src/App.elm --output app.js --yes",
     "build": "elm make src/App.elm --output app.js",
-    "start": "node proxy.js"
+    "start": "node proxy.js",
+    "start:heroku": "API_URL=https://amiibos-api.herokuapp.com node proxy.js"
   },
   "author": "",
   "license": "ISC",
