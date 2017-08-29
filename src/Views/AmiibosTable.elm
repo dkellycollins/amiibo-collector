@@ -3,7 +3,6 @@ module Views.AmiibosTable exposing (viewAmiibosTable)
 import Date exposing (Date)
 import Date.Extra exposing (toFormattedString)
 import Html exposing (text)
-import Material.Icon exposing (i)
 import Material.Options exposing (css, onClick)
 import Material.Table exposing (ascending, descending, sorted, table, tbody, td, th, thead)
 import Messages exposing (..)
@@ -18,8 +17,7 @@ viewAmiibosTable amiibos sortInfo =
     in
     table [ css "width" "100%" ]
         [ thead []
-            [ th [] []
-            , viewNameColumnHeader sortInfo.field sortInfo.dir
+            [ viewNameColumnHeader sortInfo.field sortInfo.dir
             , viewSeriesColumnHeader sortInfo.field sortInfo.dir
             , viewReleaseDateColumnHeader sortInfo.field sortInfo.dir
             ]
@@ -105,8 +103,7 @@ viewReleaseDateColumnHeader sortField sortDir =
 viewAmiiboTableRow : Amiibo -> Html.Html msg
 viewAmiiboTableRow amiibo =
     Html.tr []
-        [ td [] [ i "check_box_outline_blank" ]
-        , td [] [ text amiibo.displayName ]
+        [ td [] [ text amiibo.displayName ]
         , td [] [ viewAmiiboSeries amiibo.series ]
         , td [] [ viewReleaseDate amiibo.releaseDate ]
         ]
