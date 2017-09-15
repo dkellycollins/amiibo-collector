@@ -2,7 +2,8 @@ module Views.AmiibosTable exposing (viewAmiibosTable)
 
 import Date exposing (Date)
 import Date.Extra exposing (toFormattedString)
-import Html exposing (text)
+import Html exposing (img, text)
+import Html.Attributes exposing (height, src, width)
 import Material.Options exposing (css, onClick)
 import Material.Table exposing (ascending, descending, sorted, table, tbody, td, th, thead)
 import Messages exposing (..)
@@ -17,7 +18,8 @@ viewAmiibosTable amiibos sortInfo =
     in
     table [ css "width" "100%" ]
         [ thead []
-            [ viewNameColumnHeader sortInfo.field sortInfo.dir
+            [ th [] []
+            , viewNameColumnHeader sortInfo.field sortInfo.dir
             , viewSeriesColumnHeader sortInfo.field sortInfo.dir
             , viewReleaseDateColumnHeader sortInfo.field sortInfo.dir
             ]
@@ -102,8 +104,13 @@ viewReleaseDateColumnHeader sortField sortDir =
 
 viewAmiiboTableRow : Amiibo -> Html.Html msg
 viewAmiiboTableRow amiibo =
+    let
+        srcUrl =
+            "/assets/" ++ amiibo.name ++ ".png"
+    in
     Html.tr []
-        [ td [] [ text amiibo.displayName ]
+        [ td [] [ img [ src srcUrl, height 32, width 32 ] [] ]
+        , td [] [ text amiibo.displayName ]
         , td [] [ viewAmiiboSeries amiibo.series ]
         , td [] [ viewReleaseDate amiibo.releaseDate ]
         ]
