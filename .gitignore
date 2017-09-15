@@ -59,4 +59,4 @@ typings/
 
 # Elm
 elm-stuff/
-app.js
+www/app.js
