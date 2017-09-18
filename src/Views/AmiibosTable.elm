@@ -106,7 +106,7 @@ viewAmiiboTableRow : Amiibo -> Html.Html msg
 viewAmiiboTableRow amiibo =
     let
         srcUrl =
-            "/assets/" ++ amiibo.name ++ ".png"
+            "https://storage.googleapis.com/amiibo-collector/" ++ amiibo.name ++ ".png"
     in
     Html.tr []
         [ td [] [ img [ src srcUrl, height 32, width 32 ] [] ]
