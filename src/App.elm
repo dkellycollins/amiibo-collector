@@ -3,11 +3,11 @@ module Main exposing (..)
 import Html
 import Html.Attributes
 import Material
-import Material.Grid
 import Material.Layout
 import Material.Progress
 import Messages exposing (..)
 import Models.Amiibos exposing (..)
+import Set exposing (..)
 import Views.AmiibosTable exposing (..)
 
 
@@ -27,6 +27,7 @@ main =
 
 type alias AppState =
     { amiibos : Amiibos
+    , selectedAmiibos : Set String
     , sortInfo : SortInfo
     , mdl : Material.Model
     }
@@ -41,6 +42,7 @@ init =
     let
         appState =
             { amiibos = []
+            , selectedAmiibos = Set.empty
             , sortInfo = SortInfo Name Asc
             , mdl = Material.model
             }
@@ -60,6 +62,16 @@ update msg appState =
 
         UpdatedAmiibos (Result.Err _) ->
             ( { appState | amiibos = [] }, Cmd.none )
+
+        ToggleAmiibo amiiboName ->
+            let
+                newSet =
+                    if Set.member amiiboName appState.selectedAmiibos then
+                        Set.remove amiiboName appState.selectedAmiibos
+                    else
+                        Set.insert amiiboName appState.selectedAmiibos
+            in
+            ( { appState | selectedAmiibos = newSet }, Cmd.none )
 
         SortChanged info ->
             ( { appState | sortInfo = info }, Cmd.none )
@@ -81,7 +93,7 @@ view appState =
         { header = [ Html.h4 [ Html.Attributes.style [ ( "padding", "8px" ) ] ] [ Html.text "Amiibos" ] ]
         , drawer = []
         , tabs = ( [], [] )
-        , main = [ viewAmiibosTable appState.amiibos appState.sortInfo ]
+        , main = [ viewAmiibosTable appState.mdl appState.selectedAmiibos appState.amiibos appState.sortInfo ]
         }
 
 
