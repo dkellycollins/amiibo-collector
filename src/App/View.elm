@@ -1,5 +1,6 @@
 module App.View exposing (view)
 
+import AmiibosTable.View
 import App.Types exposing (..)
 import Html
 import Html.Attributes
@@ -15,5 +16,5 @@ view model =
         { header = [ Html.h4 [ Html.Attributes.style [ ( "padding", "8px" ) ] ] [ Html.text "Amiibos" ] ]
         , drawer = []
         , tabs = ( [], [] )
-        , main = []
+        , main = [ AmiibosTable.View.view model.amiibos ]
         }
