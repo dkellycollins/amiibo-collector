@@ -13,7 +13,7 @@ view model =
         model.mdl
         [ Material.Layout.fixedHeader
         ]
-        { header = [ Html.h4 [ Html.Attributes.style [ ( "padding", "8px" ) ] ] [ Html.text "Amiibos" ] ]
+        { header = [ Html.h4 [ Html.Attributes.style [ ( "padding-left", "16px" ) ] ] [ Html.text "Amiibos" ] ]
         , drawer = []
         , tabs = ( [], [] )
         , main = [ AmiibosTable.View.view AmiibosTableMsg model.amiibos model.amiibosTable ]
