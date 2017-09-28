@@ -1,6 +1,7 @@
 module App.State exposing (init, subscriptions, update)
 
 import Amiibos.Rest
+import AmiibosTable.State
 import App.Types exposing (..)
 import Material
 
@@ -10,6 +11,7 @@ init =
     let
         model =
             { amiibos = []
+            , amiibosTable = AmiibosTable.State.init
             , mdl = Material.model
             }
     in
@@ -24,6 +26,9 @@ update msg model =
 
         UpdatedAmiibos (Result.Err _) ->
             ( { model | amiibos = [] }, Cmd.none )
+
+        AmiibosTableMsg msg_ ->
+            AmiibosTable.State.update msg_ model
 
         Mdl msg_ ->
             Material.update Mdl msg_ model

@@ -16,5 +16,5 @@ view model =
         { header = [ Html.h4 [ Html.Attributes.style [ ( "padding", "8px" ) ] ] [ Html.text "Amiibos" ] ]
         , drawer = []
         , tabs = ( [], [] )
-        , main = [ AmiibosTable.View.view model.amiibos ]
+        , main = [ AmiibosTable.View.view AmiibosTableMsg model.amiibos model.amiibosTable ]
         }
