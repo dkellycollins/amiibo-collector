@@ -20,5 +20,5 @@
     "express-http-proxy": "^1.0.5",
     "electron": "^1.7.9",
     "electron-prebuilt": "^1.4.13"
-  },
+  }
 }
