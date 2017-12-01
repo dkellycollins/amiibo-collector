@@ -8,7 +8,7 @@
     "build": "elm make src/Main.elm --output www/app.js",
     "start": "node proxy.js",
     "start:electron": "electron electron/main.js",
-    "build:electron": "elm make src/Main.elm --output electron/app.js"
+    "build:electron": "elm make src/Main.elm --output app/app.js"
   },
   "author": "",
   "license": "ISC",
