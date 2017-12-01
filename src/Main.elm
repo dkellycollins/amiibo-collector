@@ -6,9 +6,9 @@ import App.View
 import Html
 
 
-main : Program Never App.Types.Model App.Types.Msg
+main : Program App.Types.Flags App.Types.Model App.Types.Msg
 main =
-    Html.program
+    Html.programWithFlags
         { init = App.State.init
         , update = App.State.update
         , subscriptions = App.State.subscriptions

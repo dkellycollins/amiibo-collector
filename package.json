@@ -7,7 +7,8 @@
     "postinstall": "elm make src/Main.elm --output www/app.js --yes",
     "build": "elm make src/Main.elm --output www/app.js",
     "start": "node proxy.js",
-    "start:electron": "electron index.js"
+    "start:electron": "electron electron/main.js",
+    "build:electron": "elm make src/Main.elm --output electron/app.js"
   },
   "author": "",
   "license": "ISC",

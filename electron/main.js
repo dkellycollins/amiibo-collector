@@ -17,7 +17,7 @@ function createWindow () {
   });
 
   // display the index.html file
-  mainWindow.loadURL(`file://${__dirname}/www/index.html`);
+  mainWindow.loadURL(`file://${__dirname}/index.html`);
 
   mainWindow.on('closed', function () {
     mainWindow = null

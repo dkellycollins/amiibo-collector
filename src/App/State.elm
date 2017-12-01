@@ -6,8 +6,8 @@ import App.Types exposing (..)
 import Material
 
 
-init : ( Model, Cmd Msg )
-init =
+init : Flags -> ( Model, Cmd Msg )
+init flags =
     let
         model =
             { amiibos = []
@@ -15,7 +15,7 @@ init =
             , mdl = Material.model
             }
     in
-    ( model, Amiibos.Rest.getAmiibos UpdatedAmiibos )
+    ( model, Amiibos.Rest.getAmiibos flags.apiUrl UpdatedAmiibos )
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )

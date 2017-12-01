@@ -8,10 +8,10 @@
     <script defer src="https://code.getmdl.io/1.3.0/material.min.js"></script>
 </head>
 <body>
-  <script src="app.js"></script>
   <script>
+    var Elm = require('./app.js');
     Elm.Main.fullscreen({
-      apiUrl: '/api'
+      apiUrl: 'https://amiibos-api.herokuapp.com'
     });
   </script>
 </body>

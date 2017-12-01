@@ -5,6 +5,9 @@ import AmiibosTable.Types
 import Http
 import Material
 
+type alias Flags =
+    { apiUrl: String
+    }
 
 type alias Model =
     { amiibos : Amiibos.Types.Amiibos

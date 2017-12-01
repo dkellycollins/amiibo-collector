@@ -7,11 +7,11 @@ import Json.Decode exposing (..)
 import Json.Decode.Pipeline exposing (decode, optional, required)
 
 
-getAmiibos : (Result Http.Error Amiibos -> msg) -> Cmd msg
-getAmiibos msg =
+getAmiibos : String -> (Result Http.Error Amiibos -> msg) -> Cmd msg
+getAmiibos apiUrl msg =
     let
         url =
-            "/api/amiibos"
+            apiUrl ++ "/amiibos"
 
         request =
             Http.get url amiibosDecoder

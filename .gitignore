@@ -60,3 +60,4 @@ typings/
 # Elm
 elm-stuff/
 www/app.js
+electron/app.js
