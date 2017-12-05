@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "postinstall": "elm make src/Main.elm --output www/app.js --yes",
+    "elm": "elm",
     "build": "elm make src/Main.elm --output www/app.js",
     "start": "node www/proxy.js",
     "build:web": "elm make src/Main.elm --output www/app.js",

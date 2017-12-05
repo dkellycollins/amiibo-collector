@@ -4,13 +4,14 @@ import Amiibos.Rest
 import AmiibosTable.State
 import App.Types exposing (..)
 import Material
+import RemoteData
 
 
 init : Flags -> ( Model, Cmd Msg )
 init flags =
     let
         model =
-            { amiibos = []
+            { amiibos = RemoteData.Loading
             , amiibosTable = AmiibosTable.State.init
             , mdl = Material.model
             }
@@ -21,11 +22,8 @@ init flags =
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
     case msg of
-        UpdatedAmiibos (Result.Ok newList) ->
-            ( { model | amiibos = newList }, Cmd.none )
-
-        UpdatedAmiibos (Result.Err _) ->
-            ( { model | amiibos = [] }, Cmd.none )
+        UpdatedAmiibos data ->
+            ( { model | amiibos = data }, Cmd.none )
 
         AmiibosTableMsg msg_ ->
             AmiibosTable.State.update msg_ model

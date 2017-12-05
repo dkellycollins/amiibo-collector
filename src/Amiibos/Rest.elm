@@ -5,9 +5,10 @@ import Date
 import Http
 import Json.Decode exposing (..)
 import Json.Decode.Pipeline exposing (decode, optional, required)
+import RemoteData
 
 
-getAmiibos : String -> (Result Http.Error Amiibos -> msg) -> Cmd msg
+getAmiibos : String -> (RemoteData.WebData Amiibos -> msg) -> Cmd msg
 getAmiibos apiUrl msg =
     let
         url =
@@ -16,7 +17,9 @@ getAmiibos apiUrl msg =
         request =
             Http.get url amiibosDecoder
     in
-    Http.send msg request
+    Http.get url amiibosDecoder
+        |> RemoteData.sendRequest
+        |> Cmd.map msg
 
 
 amiibosDecoder : Decoder Amiibos
