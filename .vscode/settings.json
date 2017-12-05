@@ -3,5 +3,6 @@
   "editor.tabSize": 4,
   "elm.makeCommand": ".\\node_modules\\.bin\\elm-make",
   "elm.formatOnSave": true,
+  "elm.formatCommand": ".\\node_modules\\.bin\\elm-format",
   "files.autoSave": "off"
 }

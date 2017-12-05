@@ -16,10 +16,11 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "elm": "^0.18.0",
-    "express": "^4.15.3",
-    "express-http-proxy": "^1.0.5",
     "electron": "^1.7.9",
-    "electron-prebuilt": "^1.4.13"
+    "electron-prebuilt": "^1.4.13",
+    "elm": "^0.18.0",
+    "elm-format": "^0.6.1-alpha",
+    "express": "^4.15.3",
+    "express-http-proxy": "^1.0.5"
   }
 }
