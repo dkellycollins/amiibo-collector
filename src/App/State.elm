@@ -16,7 +16,7 @@ init flags =
             , mdl = Material.model
             }
     in
-    ( model, Amiibos.Rest.getAmiibos flags.apiUrl UpdatedAmiibos )
+        ( model, Amiibos.Rest.getAmiibos flags.apiUrl UpdatedAmiibos )
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )

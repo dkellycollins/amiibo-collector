@@ -1,4 +1,4 @@
-module AmiibosTable.State exposing (..)
+module AmiibosTable.State exposing (init, update)
 
 import AmiibosTable.Types exposing (..)
 
